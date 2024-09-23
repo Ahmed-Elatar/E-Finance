@@ -111,15 +111,29 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
      **Methods:**  
      - `GET`: Retrieves a ticker symbol by its ID.
      - `DELETE`: Deletes a specific ticker symbol.
+    Example:
+    ```
+    `GET`
+    [
+        {
+        "name": "American Airlines Group Inc.",
+        "symbol": "AAL",
+        "current_price": 10.98,
+        "price_change": -0.02999999999999936,
+        "current_volume": 30478822.0,
+        "volume_change": -114194573.0
+        }
+    ]
+    ```
   
   5. **`TickersHistoryView(ListAPIView)`**  
     API view to retrieve historical price data for all tickers.
 
-    **Methods:**  
-    - `GET`: Returns historical price data for all ticker symbols.
-
-    **Returns:**  
-    - `list`: A list of dictionaries containing the historical price data for each ticker symbol.
+        **Methods:**  
+        - `GET`: Returns historical price data for all ticker symbols.
+    
+        **Returns:**  
+        - `list`: A list of dictionaries containing the historical price data for each ticker symbol.
 
     Example:
     ```json
