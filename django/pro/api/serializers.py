@@ -19,5 +19,5 @@ class HistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = History
         fields = '__all__'
-        read_only_fields = ['data']
+        read_only_fields = ['date']
         depth =1

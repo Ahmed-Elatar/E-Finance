@@ -25,7 +25,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     
 
-    path('swagger/', schema_view.with_ui('swagger'), name='swagger'),
+    path('', schema_view.with_ui('swagger'), name='swagger'),
 
     path('take-symbol/<str:symbol>', TakeSymbol.as_view() ,name='take-symbol'),
 

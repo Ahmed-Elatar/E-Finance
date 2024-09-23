@@ -91,7 +91,7 @@ def check_ticker_name( data :Dict ):
         this function used to retrieve a list of accepted-attempts data from mongoDB
 """
 @app.get("/show-accepted-attempts/")
-def show_attempts():
+def show_accepted_attempts():
     result =list(db.attempts.find( {'status':'accepted'},{"_id": 0}))
     return result
 
@@ -102,7 +102,7 @@ def show_attempts():
         this function used to retrieve a list of not-accepted-attempts data from mongoDB
 """
 @app.get("/show-not-accepted-attempts/")
-def show_attempts():
+def show_not_accepted_attempts():
     result =list(db.attempts.find( {'status':'not-accepted'},{"_id": 0}))
     return result
 
