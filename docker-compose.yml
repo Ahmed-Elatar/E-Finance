@@ -1,0 +1,115 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: final
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ahmed2000-
+
+  
+
+  django:
+    build: 
+      context: ./django
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./django/pro:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - db
+    environment:
+      - DATABASE_NAME=final
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=Ahmed2000-
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+
+
+  celery:
+    build: 
+      context: ./django
+    command: celery -A pro worker -l info
+    volumes:
+      - ./django/pro:/app  
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+    environment:
+      - DATABASE_NAME=final
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=Ahmed2000-
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+  celery_beat:
+    build: 
+      context: ./django
+    command: celery -A pro beat -l info -S django
+    volumes:
+      - ./django/pro:/app  
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+    environment:
+      - DATABASE_NAME=final
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=Ahmed2000-
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+
+  fastapi:
+    build: ./fastapi  
+    command: bash -c "uvicorn main:app --reload --host 0.0.0.0 --port 8001"
+    volumes:
+      - ./fastapi/app:/app 
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mongoDB
+    networks:
+      - backend
+
+
+  mongoDB:
+    image: "mongo:latest"
+    networks:
+      - backend
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    
+networks:
+  backend:
+    driver: bridge
+
+
+volumes:
+  postgres_data:
+  mongo_data:
