@@ -83,22 +83,24 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
   
   2. **`ReceiveTickerData(APIView)`**  
      API view that receives and processes ticker data from FastAPI.
- 
-  **Methods:**  
-  - `POST`: Processes incoming stock data and saves valid ticker symbols to the database.
+     
+      **Methods:**  
+      - `POST`: Processes incoming stock data and saves valid ticker symbols to the database.
 
- **Returns:**  
-   - `dict`: A dictionary containing a success message after processing the stock data.
+     **Returns:**  
+       - `dict`: A dictionary containing a success message after processing the stock data.
 
-    `GET`:
-    ```{
-                'symbol': "NVDA",
-                'name': "NVIDIA Corporation",
-                'sender': "ahmed-elatar",
-                'status': "accepted",
-                
-            }
-    ```  
+        Example:
+        `GET`:
+        ```
+                {
+                    'symbol': "NVDA",
+                    'name': "NVIDIA Corporation",
+                    'sender': "ahmed-elatar",
+                    'status': "accepted",
+                    
+                }
+        ```  
   3. **`TakeSymbol(APIView)`**  
      API view for sending stock ticker symbols from the Django app to FastAPI.
      
@@ -127,7 +129,7 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
     ```
   
   5. **`TickersHistoryView(ListAPIView)`**  
-    API view to retrieve historical price data for all tickers.
+        API view to retrieve historical price data for all tickers.
 
         **Methods:**  
         - `GET`: Returns historical price data for all ticker symbols.
@@ -135,25 +137,25 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
         **Returns:**  
         - `list`: A list of dictionaries containing the historical price data for each ticker symbol.
 
-    Example:
-    ```json
-    [
-        {
-            "symbol": "AAPL",
-            "history": [
-                {"date": "2024-08-01", "price": 145.32},
-                {"date": "2024-08-02", "price": 146.87}
-            ]
-        },
-        {
-            "symbol": "GOOGL",
-            "history": [
-                {"date": "2024-08-01", "price": 2725.6},
-                {"date": "2024-08-02", "price": 2732.8}
-            ]
-        }
-    ]
-    ```
+        Example:
+        ```
+        [
+            {
+                "symbol": "AAPL",
+                "history": [
+                    {"date": "2024-08-01", "price": 145.32},
+                    {"date": "2024-08-02", "price": 146.87}
+                ]
+            },
+            {
+                "symbol": "GOOGL",
+                "history": [
+                    {"date": "2024-08-01", "price": 2725.6},
+                    {"date": "2024-08-02", "price": 2732.8}
+                ]
+            }
+        ]
+        ```
 ### FastAPI
 
 1. **`receive_ticker_name(recived_data: Dict)`**  
@@ -189,7 +191,7 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
    **Returns:**  
    - A list of dictionaries containing data for all accepted ticker symbols.
 
-5. **`show_not_accepted_attempts()` (Not-Accepted)**  
+5. **`show_not_accepted_attempts()` **  
    Retrieves a list of not-accepted attempts from MongoDB. Only records with the status `"not-accepted"` are returned.
 
    **Returns:**  
