@@ -83,14 +83,14 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
   
   2. **`ReceiveTickerData(APIView)`**  
      API view that receives and processes ticker data from FastAPI.
-     
-    **Methods:**  
-    - `POST`: Processes incoming stock data and saves valid ticker symbols to the database.
+ 
+  **Methods:**  
+  - `POST`: Processes incoming stock data and saves valid ticker symbols to the database.
 
-    **Returns:**  
-    - `dict`: A dictionary containing a success message after processing the stock data.
+ **Returns:**  
+   - `dict`: A dictionary containing a success message after processing the stock data.
 
-    Example:
+    `GET`:
     ```{
                 'symbol': "NVDA",
                 'name': "NVIDIA Corporation",
