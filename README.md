@@ -22,11 +22,16 @@ Based on [YFinacne](https://finance.yahoo.com/markets/stocks/most-active//). The
 - Dockerized for simplified deployment.
 - Uses Swagger for API testing.
 
+---
+
 ## Prerequisites
 Ensure you have the following installed:
 - [Python 3.8+](https://www.python.org/downloads)
 - [Docker](https://www.docker.com/get-started/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+
+
+---
 
 ## Installation
 1. Clone the repository:
@@ -50,6 +55,8 @@ Ensure you have the following installed:
     sudo docker-compose up
     ```
 
+---
+
 
 ## Usage
 Once running, access the application at `http://0.0.0.0:8000/`.
@@ -59,8 +66,12 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
 
 
 
+
+---
+
+
 ## Functions and Classes
-A-Django
+###Django
 1. **`send_data_to_fastapi(data)`**  
      Sends stock ticker data to the FastAPI service for processing.
      
@@ -95,7 +106,7 @@ A-Django
    **Methods:**  
    - `GET`: Returns historical price data for all ticker symbols.
 
-B- FastAPI
+### FastAPI
 
 1. **`receive_ticker_name(recived_data: Dict)`**  
    This function receives ticker data from Django in JSON format, checks if the ticker symbol is valid by calling `check_ticker_name()`, and then sends the result back to Django.
@@ -140,12 +151,12 @@ B- FastAPI
 
 
 
+---
 
 
 
 
-
-## URLs Map
+## End-Points Map
 
 ### Django
 
@@ -184,12 +195,13 @@ B- FastAPI
 - **Show Not Accepted Attempts:** [`http://0.0.0.0:8001/show-not-accepted-attempts/`](http://0.0.0.0:8001/show-not-accepted-attempts/)  
   _(Retrieves a list of not-accepted ticker validation attempts from MongoDB)_
 
----
-
 ### Overview
 
 - **Django** is handling endpoints related to user interaction and data storage in relational databases.
 - **FastAPI** is validating ticker symbols using yFinance and storing validation attempts in MongoDB.
+
+
+---
 
 
 ## Installation Notes
