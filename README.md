@@ -1,7 +1,7 @@
 # E-Finance
 
-This project is a Django,FastAPI application that takes and store a Stock Ticker and watch changes in Price and volume of this ticker and retrieves Historical data for this changes
-Based on [YFinacne](https://finance.yahoo.com/markets/stocks/most-active//). The application integrates Celery and Redis for background task processing, is dockerized for easy deployment, and includes Swagger for API testing.
+This project is a Django, FastAPI application that takes and stores a Stock Ticker and watches changes in the Price and volume of this ticker, and retrieves Historical data for these changes
+Based on [YFinacne](https://finance.yahoo.com/markets/). The application integrates Celery and Redis for background task processing, is dockerized for easy deployment, and includes Swagger for API testing.
 
 ## Table of Contents
 - [Features](#features)
@@ -13,10 +13,10 @@ Based on [YFinacne](https://finance.yahoo.com/markets/stocks/most-active//). The
 - [Installation Notes](#installation-notes)
 
 ## Features
-- Takes Ticker symbol and check if it correct using FastAPI
+- Takes Ticker symbol and checks if it is correct using FastAPI
 - Store adding symbol attempts in mongoDB
 - Manages stock ticker symbols and their historical price data.
-- Uses yFinance for fetching live stock data.
+- Uses YFinance for fetching live stock data.
 - Stores data in PostgreSQL.
 - Utilizes Celery and Redis for asynchronous task processing.
 - Dockerized for simplified deployment.
@@ -71,7 +71,7 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
 
 
 ## Functions and Classes
-###Django
+### Django
 1. **`send_data_to_fastapi(data)`**  
      Sends stock ticker data to the FastAPI service for processing.
      
@@ -84,28 +84,62 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
   2. **`ReceiveTickerData(APIView)`**  
      API view that receives and processes ticker data from FastAPI.
      
-     **Methods:**  
-     - `POST`: Processes incoming stock data and saves valid ticker symbols to the database.
-  
+    **Methods:**  
+    - `POST`: Processes incoming stock data and saves valid ticker symbols to the database.
+
+    **Returns:**  
+    - `dict`: A dictionary containing a success message after processing the stock data.
+
+    Example:
+    ```{
+                'symbol': "NVDA",
+                'name': "NVIDIA Corporation",
+                'sender': "ahmed-elatar",
+                'status': "accepted",
+                
+            }
+    ```  
   3. **`TakeSymbol(APIView)`**  
      API view for sending stock ticker symbols from the Django app to FastAPI.
      
      **Methods:**  
      - `POST`: Sends the stock symbol provided by the user to FastAPI.
   
-  4. **`TickerView(RetrieveDestroyAPIView)`**  
-     API view to retrieve or delete a specific ticker symbol.
+ 4. **`TickerView(RetrieveDestroyAPIView)`**  
+    API view to retrieve or delete a specific ticker symbol.
      
      **Methods:**  
      - `GET`: Retrieves a ticker symbol by its ID.
      - `DELETE`: Deletes a specific ticker symbol.
   
   5. **`TickersHistoryView(ListAPIView)`**  
-     API view to retrieve historical price data for all tickers.
-   
-   **Methods:**  
-   - `GET`: Returns historical price data for all ticker symbols.
+    API view to retrieve historical price data for all tickers.
 
+    **Methods:**  
+    - `GET`: Returns historical price data for all ticker symbols.
+
+    **Returns:**  
+    - `list`: A list of dictionaries containing the historical price data for each ticker symbol.
+
+    Example:
+    ```json
+    [
+        {
+            "symbol": "AAPL",
+            "history": [
+                {"date": "2024-08-01", "price": 145.32},
+                {"date": "2024-08-02", "price": 146.87}
+            ]
+        },
+        {
+            "symbol": "GOOGL",
+            "history": [
+                {"date": "2024-08-01", "price": 2725.6},
+                {"date": "2024-08-02", "price": 2732.8}
+            ]
+        }
+    ]
+    ```
 ### FastAPI
 
 1. **`receive_ticker_name(recived_data: Dict)`**  
@@ -197,8 +231,8 @@ Go to `http://0.0.0.0:8000/admin` to access the Django admin panel using the sup
 
 ### Overview
 
-- **Django** is handling endpoints related to user interaction and data storage in relational databases.
-- **FastAPI** is validating ticker symbols using yFinance and storing validation attempts in MongoDB.
+- **Django** handles endpoints related to user interaction and data storage in PostgesSQL databases.
+- **FastAPI** validates ticker symbols using yFinance and stores validation attempts in MongoDB.
 
 
 ---
