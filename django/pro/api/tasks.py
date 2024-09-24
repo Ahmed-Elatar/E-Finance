@@ -11,7 +11,8 @@ import yfinance as yf
 """
 update_tickers_data Function :~
 
-It's a celery task used to get updated price and volume data from yfinance to the tickers .
+It's a celery task used to get updated price and volume data from yfinance to the tickers
+and save it in History model .
 """
 @shared_task
 def update_tickers_data():
