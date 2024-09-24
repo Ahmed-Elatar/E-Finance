@@ -20,7 +20,12 @@ load_dotenv()
 
 
 
-
+"""
+TakeSymbol class :~
+This class uses APIViews and have to methods
+POST : to send symbol and user data to FastAPI to check it's correctness
+GET : return HttpResponse "Don't recive Ticker Symbol ?!.."
+"""
 class TakeSymbol(APIView):
     
     def post(self,request,symbol):
@@ -37,7 +42,11 @@ class TakeSymbol(APIView):
 
 
 
+"""
+send_data_to_fastapi Function :~
+This function used to send data to FastAPI .
 
+"""
 def send_data_to_fastapi(data):
 
     url = os.getenv('Fastapi_url')  
@@ -48,20 +57,25 @@ def send_data_to_fastapi(data):
 
 
 
-
+"""
+ReceiveTickerData class :~
+This class uses APIViews and have to methods
+POST : to recive Ticker status from FastAPI if status is accepted saves it in postgreSQL
+GET : return HttpResponse "NO Data recived from FastAPI"
+"""
 class ReceiveTickerData(APIView):
 
     def post(self, request):
         
         
-        response_data = request.data
+        response = request.data
 
         # Check if status is 'accepted'
-        if response_data.get('status') == 'accepted':
+        if response.get('status') == 'accepted':
             # Extract 'symbol' and 'name' from the response data
             ticker_data = {
-                'symbol': response_data.get('symbol'),
-                'name': response_data.get('name')
+                'symbol': response.get('symbol'),
+                'name': response.get('name')
             }
 
             
@@ -70,35 +84,53 @@ class ReceiveTickerData(APIView):
             ## Save the Ticker instance after the Validation
             if serializer.is_valid():
                 serializer.save()
-                return JsonResponse({'status': response_data['status']}, status=status.HTTP_201_CREATED)
+                return JsonResponse({'status': response['status']}, status=status.HTTP_201_CREATED)
             
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
         # If status is  'not-accepted', return the status as a response
-        return JsonResponse({'status': response_data['status']}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({'status': response['status']}, status=status.HTTP_204_NO_CONTENT)
+    
+    def get(self ,request):
+    
+        return HttpResponse("NO Data recived from FastAPI")
 
 
 
 
 
-
+"""
+TickersView class :~
+This class uses the Generic Views to retrieve a list of Tickers data .
+"""
 class TickersView(ListAPIView):
 
     queryset = Ticker.objects.all()
     serializer_class = TickerSerializer     
 
+"""
+TickerView class 
+This class uses the Generic Views to retrieve a single Ticker data or delete it.
+"""
 class TickerView(RetrieveDestroyAPIView):
 
     queryset = Ticker.objects.all()
     serializer_class = TickerSerializer
 
 
-
+"""
+TickersHistoryView class :~
+This class uses the Generic Views to retrieve a list of Tickers history data .
+"""
 class TickersHistoryView(ListAPIView):
 
     queryset = History.objects.all().order_by('ticker')
     serializer_class = HistorySerializer     
 
+"""
+TickerHistoryView class :~
+This class uses the Generic Views to retrieve a list of single Ticker history data .
+"""
 class TickerHistoryView(ListAPIView):
 
     serializer_class = HistorySerializer
