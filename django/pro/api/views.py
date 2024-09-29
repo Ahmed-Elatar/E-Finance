@@ -8,6 +8,8 @@ from .models import *
 from .serializers import *
 from .tasks import *
 
+from drf_yasg.utils import swagger_auto_schema
+
 import os ,requests , yfinance as yf
 
 from dotenv import load_dotenv
@@ -29,13 +31,14 @@ GET : return HttpResponse "Don't recive Ticker Symbol ?!.."
 class TakeSymbol(APIView):
     
     def post(self,request,symbol):
-        result =send_data_to_fastapi({"sender":str(request.user) ,"symbol": symbol })
-        print(result.status_code)
         
+        result =send_data_to_fastapi({"sender":str(request.user) ,"symbol": symbol.upper() })
+        print(result.status_code)
         return JsonResponse({'Data-Status': 'Recived'}, status=status.HTTP_200_OK)
-    def get(self,request):
+    
+    def get(self,request,symbol):
 
-        return HttpResponse("Don't recive Ticker Symbol ?!..")
+        return JsonResponse({'Data-Status': 'Not - Recived'}, status=status.HTTP_204_NO_CONTENT )
 
         
 
@@ -50,9 +53,8 @@ This function used to send data to FastAPI .
 def send_data_to_fastapi(data):
 
     url = os.getenv('Fastapi_url')  
-    result = requests.post(url, json=data)
-    return result
-
+    requests.post(url, json=data)
+    return JsonResponse({'Data-Status': 'sent'}, status=status.HTTP_200_OK)
 
 
 
@@ -65,6 +67,7 @@ GET : return HttpResponse "NO Data recived from FastAPI"
 """
 class ReceiveTickerData(APIView):
 
+    @swagger_auto_schema(auto_schema=None)
     def post(self, request):
         
         
@@ -93,8 +96,7 @@ class ReceiveTickerData(APIView):
     
     def get(self ,request):
     
-        return HttpResponse("NO Data recived from FastAPI")
-
+        return JsonResponse({'status': 'NO-Data-recived'}, status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -135,6 +137,8 @@ class TickerHistoryView(ListAPIView):
 
     serializer_class = HistorySerializer
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return History.objects.none()
         pk = self.kwargs['pk']
         return History.objects.filter(ticker=pk)
 
@@ -147,14 +151,3 @@ class TickerHistoryView(ListAPIView):
 
 
 
-
-def test_yahoo(request):
-
-    #GOLD: Period  must be one of ['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
-    tkr= yf.Ticker("NVDA")
-    stock_price = tkr.history(interval ='1h' ,period="1d")['Open']
-    print(tkr.history(period ='1d'))
-
-    
-
-    return HttpResponse("HOME...")

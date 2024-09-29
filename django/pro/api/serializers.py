@@ -14,8 +14,8 @@ class TickerSerializer(serializers.ModelSerializer):
 
 class HistorySerializer(serializers.ModelSerializer):
 
-    # ticker = serializers.PrimaryKeyRelatedField(queryset=Ticker.objects.all() )
-    ticker = TickerSerializer(read_only=True)
+    ticker = serializers.PrimaryKeyRelatedField(queryset=Ticker.objects.all() )
+    # ticker = TickerSerializer(read_only=True)
     class Meta:
         model = History
         fields = '__all__'

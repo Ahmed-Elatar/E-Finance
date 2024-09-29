@@ -29,6 +29,7 @@ def update_tickers_data():
                     'volume': volume,
                     'date': timezone.now()  
                 }
+        
         serializer = HistorySerializer(data=history_data)
         if serializer.is_valid():
             serializer.save()

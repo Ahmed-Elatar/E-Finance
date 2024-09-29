@@ -10,7 +10,7 @@ from .resource import *
 @admin.register(Ticker)
 class TickerAdmin(ImportExportModelAdmin):
     resource_class = TickerResource
-    list_display =['name','symbol','current_price', 'price_change','current_volume','volume_change','last_update']
+    list_display =['name','symbol','current_price', 'price_change', 'price_change_per','current_volume','volume_change','volume_change_per','last_update']
     readonly_fields = [field.name for field in Ticker._meta.fields]     
     ordering = ['name'] 
 

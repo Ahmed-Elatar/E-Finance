@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('take-symbol/<str:symbol>', TakeSymbol.as_view() ,name='take-symbol'),
 
-    path('recive/', ReceiveTickerData.as_view() ,name='recive'),
+    path('recive/', ReceiveTickerData.as_view() ,name='recive_ticker_data'),
     
 
     path('tickers/', TickersView.as_view() ,name='tickers'),
@@ -38,7 +38,6 @@ urlpatterns = [
     path('tickers-history/', TickersHistoryView.as_view() ,name='tickers-history'),
     path('ticker-history/<int:pk>', TickerHistoryView.as_view() ,name='ticker-history'),
 
-    path('test-y/', test_yahoo ,name='test'),
 
 
 

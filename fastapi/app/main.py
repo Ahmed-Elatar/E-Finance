@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from database import db
-from models import *
+
 from serializers import *
 import requests 
 import yfinance as yf
