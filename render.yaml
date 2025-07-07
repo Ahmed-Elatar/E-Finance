@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: pro
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn pro.wsgi:application
+    env: python
+    plan: free
+    web: gunicorn pro.wsgi
+

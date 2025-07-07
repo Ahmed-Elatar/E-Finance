@@ -23,6 +23,8 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+
+    # path('index/', index ,name='index'),
     
 
     path('', schema_view.with_ui('swagger'), name='swagger'),

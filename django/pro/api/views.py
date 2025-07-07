@@ -10,14 +10,23 @@ from .tasks import *
 
 from drf_yasg.utils import swagger_auto_schema
 
-import os ,requests , yfinance as yf
+import os ,requests , yfinance as yf ,json
 
+import yfinance
 from dotenv import load_dotenv
 
 
 load_dotenv()
 
 
+# def index(request):
+    
+#     # info = yfinance.Ticker('META')
+#     # print(info.info )
+#     raw_data = requests.get("https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAL")
+#     print(f"Raw response: {raw_data.text}") 
+
+#     return HttpResponse("Hello, world. You're at the polls index.")
 
 
 
@@ -28,17 +37,21 @@ This class uses APIViews and have to methods
 POST : to send symbol and user data to FastAPI to check it's correctness
 GET : return HttpResponse "Don't recive Ticker Symbol ?!.."
 """
+
 class TakeSymbol(APIView):
     
     def post(self,request,symbol):
         
         result =send_data_to_fastapi({"sender":str(request.user) ,"symbol": symbol.upper() })
-        print(result.status_code)
+        # body_data = json.loads(request.body.decode('utf-8'))
+
+        
+        print(request.body)     
         return JsonResponse({'Data-Status': 'Recived'}, status=status.HTTP_200_OK)
     
     def get(self,request,symbol):
 
-        return JsonResponse({'Data-Status': 'Not - Recived'}, status=status.HTTP_204_NO_CONTENT )
+        return JsonResponse({'Data-Status' : 'Not - Recived'}, status=status.HTTP_204_NO_CONTENT )
 
         
 
@@ -106,10 +119,10 @@ TickersView class :~
 This class uses the Generic Views to retrieve a list of Tickers data .
 """
 class TickersView(ListAPIView):
-
+    
     queryset = Ticker.objects.all()
     serializer_class = TickerSerializer     
-
+    
 """
 TickerView class 
 This class uses the Generic Views to retrieve a single Ticker data or delete it.
